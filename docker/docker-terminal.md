@@ -103,3 +103,13 @@ sudo usermod -aG docker $USER
 ```
 
 Добавляем текущего пользователя в дополнительную группу `docker` для запуска команд `docker` без sudo. Достигается за счёт того, что пользователь получает доступ к сокету `/var/run/docker.sock`, который принадлежит группе `docker`.
+
+---
+```bash
+mkdir ~/ollama-docker && cd ~/ollama-docker
+```
+
+Создаём каталог `ollama-docker` и переходим в него
+
+---
+

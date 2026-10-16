@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=1h          # Держать модель в памяти 1 час (можно увеличить)
+      - OLLAMA_NUM_PARALLEL=1         # Отключить параллельную обработку (для CPU это критично)
+      - OLLAMA_NUM_THREADS=7          # Использовать 7 потоков (у вас 8 ядер)
+      - OLLAMA_CPU_ONLY=1             # Явно указать режим только CPU
+    # Ограничения ресурсов, чтобы контейнер не "съел" всю систему
+    deploy:
+      resources:
+        limits:
+          cpus: '7.0'
+          memory: 20G
+        reservations:
+          memory: 4G
+
+volumes:
+  ollama_data:
