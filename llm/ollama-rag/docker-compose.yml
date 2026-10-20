@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: rag-qdrant
+    ports:
+      - "6333:6333" # REST API
+      - "6334:6334" # gRPC
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  rag-app:
+    build: ./rag-app
+    container_name: rag-app
+    depends_on:
+      - ollama
+      - qdrant
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - QDRANT_URL=http://qdrant:6333
+    volumes:
+      - ./docs:/app/docks # Сюда будем класть .pdf-ы
+    ports:
+      - "8501:8501" # Пишут, что нужен для какого-то Streamlit. Разберёмся
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  qdrant_data:
