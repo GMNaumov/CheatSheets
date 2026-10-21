@@ -1,0 +1,41 @@
+# docker-compose для запуска DeepSeek Harness и ollama в одной среде
+
+version: '3.8'
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: dsh-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - dsh-net
+    
+  dsh:
+    build: . # Ссылаемся на Dockerfile
+    container_name: dsh-server
+    restart: unless-stopped
+    ports:
+      - "3080:3080"
+    depends_on:
+      - ollama
+    environment:
+      # Точка входа к Ollama изнутри Docker-сети
+      # Имя сервиса "dsh-ollama" автоматом резолвится в IP контейнера
+      - OLLAMA_BASE_URL=http://dsh-ollama:11434
+      # DeepSeek Harness требует непустое значение для apiKeyEnv, даже если Ollama его не проверяет
+      - OLLAMA_API_KEY=dummy-key-local
+    volumes:
+      - dsh_data:/app/dsh-home
+    networks:
+      - dsh-net
+
+volumes:
+  ollama_data:
+  dsh_data:
+    
+networks:
+  dsh-net:
+    driver: bridge
