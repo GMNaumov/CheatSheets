@@ -4,37 +4,37 @@ version: '3.8'
 services:
   ollama:
     image: ollama/ollama:latest
-    container_name: dsh-ollama
+    container_name: ollama
     restart: unless-stopped
-    ports:
-      - "11434:11434"
     volumes:
-      - ollama_data:/root/.ollama
+      - ollama-data:/root/.ollama
     networks:
       - dsh-net
     
   dsh:
-    build: . # Ссылаемся на Dockerfile
-    container_name: dsh-server
+    # build: . Ссылаемся на Dockerfile, если он есть...
+    image: ghcr.io/omdsh-dev/dsh-container:latest
+    container_name: dsh
     restart: unless-stopped
     ports:
-      - "3080:3080"
+      - "127.0.0.1:3080:3080"
     depends_on:
       - ollama
     environment:
-      # Точка входа к Ollama изнутри Docker-сети
-      # Имя сервиса "dsh-ollama" автоматом резолвится в IP контейнера
-      - OLLAMA_BASE_URL=http://dsh-ollama:11434
-      # DeepSeek Harness требует непустое значение для apiKeyEnv, даже если Ollama его не проверяет
-      - OLLAMA_API_KEY=dummy-key-local
+      # Разрешаем доступ к DSH с localhost и любых других хостов в сети Docker
+      - DSH_CONTAINER_TRUSTED_HOSTS=localhost,127.0.0.1,dsh
+      # Отключаем проверку ключа для простоты локальной разработки
+      # В реальной среде с доступом извне обязательно задайте ключ!
+      # - DSH_CONTAINER_KEY=""
     volumes:
-      - dsh_data:/app/dsh-home
+      - dsh-data:/home/dsh/.dsh
+      - ./workspace:/home/dsh/workspace
     networks:
       - dsh-net
 
 volumes:
-  ollama_data:
-  dsh_data:
+  ollama-data:
+  dsh-data:
     
 networks:
   dsh-net:
