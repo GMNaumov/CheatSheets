@@ -12,7 +12,6 @@ services:
       - dsh-net
     
   dsh:
-    # build: . Ссылаемся на Dockerfile, если он есть...
     image: ghcr.io/omdsh-dev/dsh-container:latest
     container_name: dsh
     restart: unless-stopped
