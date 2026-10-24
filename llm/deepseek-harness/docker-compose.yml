@@ -4,16 +4,16 @@ version: '3.8'
 services:
   ollama:
     image: ollama/ollama:latest
-    container_name: ollama
+    container_name: ngm-lmm-ollama
     restart: unless-stopped
     volumes:
-      - ollama-data:/root/.ollama
+      - ngm-lmm-ollama-data:/root/.ollama
     networks:
       - dsh-net
     
   dsh:
     image: ghcr.io/omdsh-dev/dsh-container:latest
-    container_name: dsh
+    container_name: ngm-lmm-dsh
     restart: unless-stopped
     ports:
       - "127.0.0.1:3080:3080"
@@ -26,7 +26,7 @@ services:
       # В реальной среде с доступом извне обязательно задайте ключ!
       # - DSH_CONTAINER_KEY=""
     volumes:
-      - dsh-data:/home/dsh/.dsh
+      - ngm-lmm-dsh-data:/home/dsh/.dsh
       - ./workspace:/home/dsh/workspace
     networks:
       - dsh-net
