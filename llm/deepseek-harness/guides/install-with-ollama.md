@@ -18,7 +18,7 @@ mkdir Projects/dsh-local && cd Projects/dsh-local
 touch docker-compose.yml
 ```
 
-В созданный `docker-compose.yml` скопируем содержание [файла](docker-compose.yml). На что необходимо обратить внимание в содержании файла:
+В созданный `docker-compose.yml` скопируем содержание [файла](../examples/compose.yaml). На что необходимо обратить внимание в содержании файла:
 
 - Взаимодействие контейнеров будет осуществляться по внутренней сети `dsh-net`. При этом для контейнера dsh будет "торчать наружу" порт 3080 - с хостовой машины к нему подключиться можно будет, но к контейнеру с Ollama по порту 11434 уже не получится;
 
@@ -51,9 +51,9 @@ docker compose up -d dsh
 
 ### Шаг 4. Настраиваем подключение DSH к Ollama
 
-- В интерфейсе DSH найти раздел `Settings` ![DSH Settings](img/dsh-settings.png)
+- В интерфейсе DSH найти раздел `Settings` ![DSH Settings](../assets/dsh-settings.png)
 
-- В настройках найти раздел `Models` и выбрать пункт `+ Add model provider` ![add model](img/dsh-models-add.png)
+- В настройках найти раздел `Models` и выбрать пункт `+ Add model provider` ![add model](../assets/dsh-model-add.png)
 
 - В открывшемся окне выбрать раздел `Custom model API` и заполнить поля:
 
@@ -67,7 +67,7 @@ docker compose up -d dsh
 
     - `API key`: оставляем пустым
 
-    - Жмём на кнопку "Fetch available models". Если всё настроено правильно, модель в контейнере ollama загружена - появится окно DSH с доступными моделями. Выбираем все (ну, или только нужные) и жмём `Add selected` ![models available](img/dsh-models-available.png)
+    - Жмём на кнопку "Fetch available models". Если всё настроено правильно, модель в контейнере ollama загружена - появится окно DSH с доступными моделями. Выбираем все (ну, или только нужные) и жмём `Add selected` ![models available](../assets/dsh-models-available.png)
 
     - Настройки завершены, жмём `Create provider`
 
