@@ -12,7 +12,6 @@ services:
     environment:
       - OLLAMA_KEEP_ALIVE=1h          # Держать модель в памяти 1 час (можно увеличить)
       - OLLAMA_NUM_PARALLEL=1         # Отключить параллельную обработку (для CPU это критично)
-    # Ограничения ресурсов, чтобы контейнер не "съел" всю систему
     deploy:
       resources:
         limits:
