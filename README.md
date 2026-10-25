@@ -10,7 +10,6 @@
 - [LLM](llm/README.md) — Ollama, DeepSeek Harness, RAG и промпты.
 - [Платформы](platforms/README.md) — инструкции, привязанные к конкретным платформам.
 - [Соглашения](conventions/README.md) — правила именования и организации проектов.
-- [Черновики](_drafts/README.md) — незавершённые материалы.
 
 ## Соглашения репозитория
 
@@ -20,7 +19,7 @@
 - Изображения и другие вложения размещаются в `assets/` рядом с материалом.
 - Имена файлов и каталогов записываются в lowercase kebab-case, кроме стандартных имён `README.md` и `Dockerfile`.
 
-## Проверка ссылок
+## Проверка репозитория
 
 Локальные ссылки между Markdown-файлами можно проверить командой:
 
@@ -28,4 +27,10 @@
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-markdown-links.ps1
 ```
 
-Та же проверка автоматически запускается в GitHub Actions при push и pull request.
+Относительные пути из Compose-файлов проверяются отдельно:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\check-compose-paths.ps1
+```
+
+GitHub Actions при push и pull request также проверяет Markdown, синтаксис Python и корректность Compose-конфигураций.

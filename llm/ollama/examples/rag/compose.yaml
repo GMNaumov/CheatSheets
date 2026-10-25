@@ -1,38 +1,46 @@
+name: ngm-llm-rag
+
 services:
   ollama:
-    image: ollama/ollama:latest
-    container_name: ngm-rag-ollama
+    image: ollama/ollama:0.40.7
+    container_name: ngm-llm-rag-ollama
     ports:
-      - "11434:11434"
+      - "127.0.0.1:11434:11434"
     volumes:
-      - ollama_data:/root/.ollama
+      - ngm-llm-rag-ollama-data:/root/.ollama
     restart: unless-stopped
 
   qdrant:
-    image: qdrant/qdrant:latest
-    container_name: ngm-rag-qdrant
+    image: qdrant/qdrant:v1.20.0
+    container_name: ngm-llm-rag-qdrant
     ports:
-      - "6333:6333" # REST API
-      - "6334:6334" # gRPC
+      - "127.0.0.1:6333:6333" # REST API
+      - "127.0.0.1:6334:6334" # gRPC
     volumes:
-      - qdrant_data:/qdrant/storage
+      - ngm-llm-rag-qdrant-data:/qdrant/storage
     restart: unless-stopped
 
   rag-app:
     build: ./rag-app
-    container_name: ngm-rag-app
+    container_name: ngm-llm-rag-app
     depends_on:
       - ollama
       - qdrant
     environment:
-      - OLLAMA_BASE_URL=http://ollama:11434
-      - QDRANT_URL=http://qdrant:6333
+      OLLAMA_BASE_URL: http://ollama:11434
+      QDRANT_URL: http://qdrant:6333
+      CHAT_MODEL: qwen3:4b
+      EMBEDDING_MODEL: nomic-embed-text
+      COLLECTION_NAME: documents
+      DOCS_PATH: /app/docs
     volumes:
-      - ./docs:/app/docs # Сюда будем класть .pdf-ы
+      - ./docs:/app/docs:ro
     ports:
-      - "8501:8501" # Пишут, что нужен для какого-то Streamlit. Разберёмся
+      - "127.0.0.1:8501:8501"
     restart: unless-stopped
 
 volumes:
-  ollama_data:
-  qdrant_data:
+  ngm-llm-rag-ollama-data:
+    name: ngm-llm-rag-ollama-data
+  ngm-llm-rag-qdrant-data:
+    name: ngm-llm-rag-qdrant-data

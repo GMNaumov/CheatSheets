@@ -1,18 +1,21 @@
 # Docker Compose для запуска DeepSeek Harness и Ollama в одной среде.
 
+name: ngm-llm-deepseek-harness
+
 services:
   ollama:
-    image: ollama/ollama:latest
-    container_name: ngm-llm-ollama
+    image: ollama/ollama:0.40.7
+    container_name: ngm-llm-deepseek-harness-ollama
     restart: unless-stopped
     volumes:
-      - ngm-llm-ollama-data:/root/.ollama
+      - ngm-llm-deepseek-harness-ollama-data:/root/.ollama
     networks:
-      - dsh-net
+      - ngm-llm-deepseek-harness-net
     
   dsh:
+    # У образа нет опубликованного версионного тега; latest проверен 2026-10-25.
     image: ghcr.io/omdsh-dev/dsh-container:latest
-    container_name: ngm-llm-dsh
+    container_name: ngm-llm-deepseek-harness-dsh
     restart: unless-stopped
     ports:
       - "127.0.0.1:3080:3080"
@@ -25,15 +28,20 @@ services:
       # В реальной среде с доступом извне обязательно задайте ключ!
       # - DSH_CONTAINER_KEY=""
     volumes:
-      - ngm-llm-dsh-data:/home/node/.dsh
-      - ./workspace:/home/node
+      - ngm-llm-deepseek-harness-dsh-data:/home/node/.dsh
+      - ngm-llm-deepseek-harness-dsh-workspace:/home/node
     networks:
-      - dsh-net
+      - ngm-llm-deepseek-harness-net
 
 volumes:
-  ngm-llm-ollama-data:
-  ngm-llm-dsh-data:
-    
+  ngm-llm-deepseek-harness-ollama-data:
+    name: ngm-llm-deepseek-harness-ollama-data
+  ngm-llm-deepseek-harness-dsh-data:
+    name: ngm-llm-deepseek-harness-dsh-data
+  ngm-llm-deepseek-harness-dsh-workspace:
+    name: ngm-llm-deepseek-harness-dsh-workspace
+
 networks:
-  dsh-net:
+  ngm-llm-deepseek-harness-net:
+    name: ngm-llm-deepseek-harness-net
     driver: bridge

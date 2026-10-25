@@ -1,0 +1,37 @@
+name: Validate repository
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Validate local Markdown links
+        shell: pwsh
+        run: ./scripts/check-markdown-links.ps1
+
+      - name: Lint Markdown
+        run: npx --yes markdownlint-cli2@0.24.0 "**/*.md" "#node_modules"
+
+      - name: Check Python syntax
+        run: python3 -m compileall -q llm/ollama/examples
+
+      - name: Validate relative Compose paths
+        shell: pwsh
+        run: ./scripts/check-compose-paths.ps1
+
+      - name: Validate Compose files
+        shell: bash
+        run: |
+          while IFS= read -r file; do
+            docker compose -f "$file" config --quiet
+          done < <(find . -type f \( -name 'compose.yaml' -o -name 'compose.yml' -o -name 'docker-compose.yaml' -o -name 'docker-compose.yml' \))

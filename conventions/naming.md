@@ -4,11 +4,11 @@
 
 - Основная сущность — **project-id**: `ngm-<domain>-<project>`. Пример: `ngm-llm-rag`.
 
-- Разделитель — только дефис `-`. Без пробелов, PascalCase, camelCase, точек и нижних подчёркиваний.
+- В идентификаторах проектов и инфраструктурных ресурсов используем только lowercase и дефис `-` как разделитель. Пробелы, PascalCase, camelCase, точки и нижние подчёркивания не используем. Стандартные имена и требования инструментов, например `README.md`, `.env` или поля сторонних форматов, остаются без изменений.
 
 ## 2. Структура хранения
 
-```
+```text
 /srv/
 ├── git/
 │   └── ngm/
@@ -71,6 +71,8 @@ environments: [local, dev, stage, prod]
 
 ## 4. Пример Docker Compose
 
+Фрагмент демонстрирует соглашения об именовании ресурсов и не является полной конфигурацией развёртывания.
+
 ```yaml
 name: ngm-pdm-workflow-prod
 
@@ -84,6 +86,8 @@ services:
   worker:
     image: registry.local/ngm/pdm/workflow/worker:v1.4.2
     container_name: ngm-pdm-workflow-worker-prod-01
+    networks:
+      - ngm-pdm-workflow-prod-net
 
 volumes:
   ngm-pdm-workflow-db-data-prod:

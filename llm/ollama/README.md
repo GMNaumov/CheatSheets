@@ -8,5 +8,5 @@
 ## Примеры
 
 - [`examples/compose`](examples/compose/) — запуск Ollama через Docker Compose.
-- [`examples/python-client`](examples/python-client/) — простой клиент на Python.
-- [`examples/rag`](examples/rag/) — заготовка окружения Ollama, Qdrant и RAG-приложения.
+- [`examples/python-client`](examples/python-client/) — самодостаточный пример Python-клиента и Ollama.
+- [`examples/rag`](examples/rag/) — рабочий локальный RAG с Ollama, Qdrant и Streamlit.

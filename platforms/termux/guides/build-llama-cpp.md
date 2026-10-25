@@ -6,13 +6,6 @@
 
 ---
 ```bash
-termux-setup-storage
-```
-
-Даём Termux доступ к файловой системе телефона. Android запросит соответствующее разрешение.
-
----
-```bash
 pkg update -y && pkg upgrade -y
 ```
 
@@ -27,7 +20,7 @@ pkg install -y proot-distro git curl wget termux-exec
 
 ---
 ```bash
-proot-distro install ubuntu
+proot-distro install ubuntu:24.04
 ```
 
 Устанавливаем Ubuntu, внутри которой будем выполнять все дальнейшие действия.
@@ -37,7 +30,7 @@ proot-distro install ubuntu
 proot-distro login ubuntu --isolated
 ```
 
-Входим в установленное окружение. Используем `--isolated`, чтобы избежать конфликтов с окружением Termux.
+Входим в установленное окружение. Флаг `--isolated` отключает стандартные привязки каталогов Termux, включая общую память Android, чтобы окружение было изолировано от файлов хоста.
 
 ---
 Дальнейшие действия выполняются внутри созданного окружения — это обычные команды терминала Ubuntu.
@@ -55,9 +48,9 @@ apt install -y build-essential git cmake
 git clone https://github.com/ggml-org/llama.cpp.git
 cd llama.cpp
 cmake -B build -DGGML_NATIVE=ON
-cmake --build build --config Release -j$(nproc)
+cmake --build build --config Release --target llama-server -j$(nproc)
 ```
 
-Клонируем репозиторий и собираем его. Технически, можно подключить оптимизации, но сработает и так.
+Клонируем репозиторий и собираем только сервер. Технически, можно подключить дополнительные оптимизации, но базовой конфигурации достаточно для проверки сборки.
 
 Исполняемый файл будет создан по пути `build/bin/llama-server`.

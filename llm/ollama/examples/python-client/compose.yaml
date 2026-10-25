@@ -1,0 +1,28 @@
+name: ngm-llm-python-client
+
+services:
+  ollama:
+    image: ollama/ollama:0.40.7
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:11434:11434"
+    volumes:
+      - ngm-llm-python-client-ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  client:
+    build: .
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      OLLAMA_MODEL: qwen3:4b
+
+volumes:
+  ngm-llm-python-client-ollama-data:
+    name: ngm-llm-python-client-ollama-data
