@@ -5,16 +5,16 @@ from ollama import Client
 # Если переменная не задана, используем localhost для локального запуска.
 ollama_host = os.getenv('OLLAMA_HOST', 'http://localhost:11434')
 
-print(f"Подуключение к Ollama: {ollama_host}")
+print(f"Подключение к Ollama: {ollama_host}")
 
 # Создаём клиент для подключения к нашему серверу Ollama.
 # Важно: в новых версиях библиотеки ollama используется конструктор Client()
-client = Client(host=ollama_host)[reference:2]
+client = Client(host=ollama_host)
 
 messages = [
     {
-        'role':'user',
-        'content':'Расскажи о параметрах своей модели'
+        'role': 'user',
+        'content': 'Расскажи о параметрах своей модели',
     },
 ]
 

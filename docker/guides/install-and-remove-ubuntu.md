@@ -1,23 +1,26 @@
+# Установка и удаление Docker в Ubuntu
+
+## Быстрое удаление
+
 ```bash
 sudo apt remove docker docker-engine docker.io containerd runc -y
 ```
 
-Удаляем Docker "нагорячую" (на рабочей станции может привести к неработоспособности контейнеров)
+Удаляем Docker «нагорячую». На рабочей станции это приведёт к остановке и неработоспособности контейнеров.
 
 ---
 ```bash
 sudo snap remove docker 2>/dev/null || true
 ```
 
-Пытаемся удалить snap-пакет docker от имени суперпользователя. В случае, если удаление не удалось - не показываем ошибку, считаем команду успешно выполненной.
+Пытаемся удалить snap-пакет Docker от имени суперпользователя. Если удалить пакет не удалось, не показываем ошибку и считаем команду успешно выполненной.
 
----
-Безопасное удаление Docker с "сухим" прогоном
+## Последовательное удаление с сухим прогоном
 
-1. "Сухой" прогон (покажет план, но не выполнит удаление):
+1. Сухой прогон — показывает план, но не выполняет удаление:
 
 ```bash
-sudo apt autoremove --dry-run docker docker-engine docker.io containerd runc
+sudo apt remove --dry-run docker docker-engine docker.io containerd runc
 ```
 
 2. Остановка служб:
@@ -32,7 +35,7 @@ sudo systemctl stop docker.service docker.socket containerd.service
 sudo apt remove docker docker-engine docker.io containerd runc -y
 ```
 
-4. Очищаем конфиги (`purge` удалит пакеты вместе с зависимостями):
+4. Удаляем пакеты вместе с их конфигурационными файлами:
 
 ```bash
 sudo apt purge docker docker-engine docker.io containerd runc -y
@@ -44,7 +47,7 @@ sudo apt purge docker docker-engine docker.io containerd runc -y
 sudo apt autoremove -y
 ```
 
-6. Чистим данные Docker (NB: удалит все образы, контейнеры и тома):
+6. Очищаем данные Docker. Команды удалят все образы, контейнеры и тома:
 
 ```bash
 sudo rm -rf /var/lib/docker
@@ -53,7 +56,8 @@ sudo rm -rf /etc/docker
 sudo rm -rf /etc/containerd
 ```
 
----
+## Установка
+
 ```bash
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg -dearmor -o /etc/apt/keyrings/docker.gpg
 ```
@@ -65,7 +69,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg -dearmor -o /
 sudo chmod a+r /etc/apt/keyrings/docker.gpg
 ```
 
-Даём всем пользователям системы право на **чтение** файла GPG-ключа Docker
+Даём всем пользователям системы право на **чтение** файла GPG-ключа Docker.
 
 ---
 ```bash
@@ -76,7 +80,7 @@ echo \
 
 ```
 
-Добавялем официальный APT-репозиторий Docker в систему. В процессе будет создан файл `/etc/apt/sources.list.d/docker.list`
+Добавляем официальный APT-репозиторий Docker в систему. В процессе будет создан файл `/etc/apt/sources.list.d/docker.list`.
 
 ---
 ```bash
@@ -95,7 +99,7 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 sudo docker run hello-world
 ```
 
-Проверяем работоспособность установленного Docker
+Проверяем работоспособность установленного Docker.
 
 ---
 ```bash
@@ -109,7 +113,5 @@ sudo usermod -aG docker $USER
 mkdir ~/ollama-docker && cd ~/ollama-docker
 ```
 
-Создаём каталог `ollama-docker` и переходим в него
-
----
+Создаём каталог `ollama-docker` и переходим в него.
 

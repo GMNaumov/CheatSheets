@@ -1,12 +1,12 @@
-### 1. Основные правила
+# Правила именования проектов и инфраструктуры
 
-- Основная сущность - **project-id**: `ngm-<domain>-<project>`. Пример: `ngm-llm-rag`.
+## 1. Основные правила
 
-- Разделитель - только дефис `-`. Без пробелов, PascalCase и camelCase, точек и нижних подчёркивания.
+- Основная сущность — **project-id**: `ngm-<domain>-<project>`. Пример: `ngm-llm-rag`.
 
-### 2. Словарь окружения
+- Разделитель — только дефис `-`. Без пробелов, PascalCase, camelCase, точек и нижних подчёркиваний.
 
-### 3. Структура хранения
+## 2. Структура хранения
 
 ```
 /srv/
@@ -45,7 +45,7 @@
             └── <YYYY-MM-DDTHH-MM-SSZ>/
 ```
 
-### 4. Пример YAML проекта
+## 3. Пример YAML проекта
 
 ```yaml
 schema: 1
@@ -69,27 +69,27 @@ components:
 environments: [local, dev, stage, prod]
 ```
 
-### 5. Пример Docker Compose
+## 4. Пример Docker Compose
 
 ```yaml
-name: acme-payments-billing-prod
+name: ngm-pdm-workflow-prod
 
 services:
   api:
-    image: registry.local/acme/payments/billing/api:v1.4.2
-    container_name: acme-payments-billing-api-prod-01
+    image: registry.local/ngm/pdm/workflow/api:v1.4.2
+    container_name: ngm-pdm-workflow-api-prod-01
     networks:
-      - acme-payments-billing-prod-net
+      - ngm-pdm-workflow-prod-net
 
   worker:
-    image: registry.local/acme/payments/billing/worker:v1.4.2
-    container_name: acme-payments-billing-worker-prod-01
+    image: registry.local/ngm/pdm/workflow/worker:v1.4.2
+    container_name: ngm-pdm-workflow-worker-prod-01
 
 volumes:
-  acme-payments-billing-db-data-prod:
-    name: acme-payments-billing-db-data-prod
+  ngm-pdm-workflow-db-data-prod:
+    name: ngm-pdm-workflow-db-data-prod
 
 networks:
-  acme-payments-billing-prod-net:
-    name: acme-payments-billing-prod-net
+  ngm-pdm-workflow-prod-net:
+    name: ngm-pdm-workflow-prod-net
 ```

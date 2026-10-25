@@ -1,39 +1,38 @@
-# docker-compose для запуска DeepSeek Harness и ollama в одной среде
+# Docker Compose для запуска DeepSeek Harness и Ollama в одной среде.
 
-version: '3.8'
 services:
   ollama:
     image: ollama/ollama:latest
-    container_name: ngm-lmm-ollama
+    container_name: ngm-llm-ollama
     restart: unless-stopped
     volumes:
-      - ngm-lmm-ollama-data:/root/.ollama
+      - ngm-llm-ollama-data:/root/.ollama
     networks:
       - dsh-net
     
   dsh:
     image: ghcr.io/omdsh-dev/dsh-container:latest
-    container_name: ngm-lmm-dsh
+    container_name: ngm-llm-dsh
     restart: unless-stopped
     ports:
       - "127.0.0.1:3080:3080"
     depends_on:
       - ollama
     environment:
-      # Разрешаем доступ к DSH с localhost и любых других хостов в сети Docker
+      # Разрешаем доступ к DSH с localhost и из контейнера dsh.
       - DSH_CONTAINER_TRUSTED_HOSTS=localhost,127.0.0.1,dsh
       # Отключаем проверку ключа для простоты локальной разработки
       # В реальной среде с доступом извне обязательно задайте ключ!
       # - DSH_CONTAINER_KEY=""
     volumes:
-      - ngm-lmm-dsh-data:/home/dsh/.dsh
-      - ./workspace:/home/dsh/workspace
+      - ngm-llm-dsh-data:/home/node/.dsh
+      - ./workspace:/home/node
     networks:
       - dsh-net
 
 volumes:
-  ollama-data:
-  dsh-data:
+  ngm-llm-ollama-data:
+  ngm-llm-dsh-data:
     
 networks:
   dsh-net:

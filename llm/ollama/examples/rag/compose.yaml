@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   ollama:
     image: ollama/ollama:latest
@@ -7,7 +5,7 @@ services:
     ports:
       - "11434:11434"
     volumes:
-      - ngm-rag-ollama-data:/root/.ollama
+      - ollama_data:/root/.ollama
     restart: unless-stopped
 
   qdrant:
@@ -17,7 +15,7 @@ services:
       - "6333:6333" # REST API
       - "6334:6334" # gRPC
     volumes:
-      - ngm-rag-ollama-data:/qdrant/storage
+      - qdrant_data:/qdrant/storage
     restart: unless-stopped
 
   rag-app:
@@ -30,7 +28,7 @@ services:
       - OLLAMA_BASE_URL=http://ollama:11434
       - QDRANT_URL=http://qdrant:6333
     volumes:
-      - ./docs:/app/docks # Сюда будем класть .pdf-ы
+      - ./docs:/app/docs # Сюда будем класть .pdf-ы
     ports:
       - "8501:8501" # Пишут, что нужен для какого-то Streamlit. Разберёмся
     restart: unless-stopped

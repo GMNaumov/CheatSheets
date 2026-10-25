@@ -1,73 +1,69 @@
-```Docker
+# Команды Ollama в Docker
+
+```bash
 docker exec ollama ollama --version
 ```
 
-Получаем версию ollama, запущенную в контейнере Docker.
+Получаем версию Ollama, запущенной в контейнере Docker.
 
 ---
-```Docker
+```bash
 docker exec ollama ollama list
 ```
 
-Список скачанных моделей в ollama
+Выводим список скачанных моделей Ollama.
 
 ---
-```Docker
+```bash
 docker compose down
 ```
 
-Остановка контейнера (данные сохраняются в томе)
+Останавливаем и удаляем контейнеры и сеть проекта. Данные сохраняются в томе.
 
 ---
-```Docker
+```bash
 docker compose up -d
 ```
 
-Запустить контейнер снова. Команда должна выполняться в каталоге с docker-compose.yml
+Запускаем контейнер снова. Команда должна выполняться в каталоге с `compose.yaml`.
 
 ---
 
-```Docker
+```bash
 docker exec -it ollama ollama pull phi4-mini
 ```
 
 Внутри ранее созданного контейнера `ollama` выполняем команду `ollama pull phi4-mini` для скачивания модели `phi4-mini`.
 
 ---
-```Docker
+```bash
 docker exec -it ollama ollama run phi4-mini
 ```
 
-Внутри контейнера `ollama` запускаем интерактивный чат
+Внутри контейнера `ollama` запускаем интерактивный чат.
 
 ---
-```Docker
+```bash
 docker exec -it ollama ollama stop phi4-mini
 ```
 Останавливаем и выгружаем из памяти модель (на примере `phi4-mini`), не удаляя файлы.
 
 ---
-```Docker
+```bash
 docker stats ollama
 ```
 
 Мониторинг ресурсов контейнера `ollama`.
 
 ---
-```Docker
+```bash
 docker exec -it ollama sh
 ```
 
-...что эквивалентно
-
-```Docker
-docker exec -it ollama bash
-```
-
-"Проваливаемся" внутрь контейнера ollama для выполнения команд внутри него.
+Открываем оболочку `sh` внутри контейнера Ollama.
 
 ---
-```Docker
+```bash
 docker exec -it ollama ollama rm phi4-mini
 ```
 
