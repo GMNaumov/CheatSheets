@@ -2,7 +2,11 @@
 
 Инструкция использует официальный APT-репозиторий Docker.
 
-## Удаляем конфликтующие пакеты
+## Перед началом
+
+Нужны Ubuntu, подключение к интернету и доступ к `sudo`. Команды ниже выполняются в терминале Ubuntu.
+
+## Шаг 1. Удалить конфликтующие пакеты
 
 Перед установкой Docker Engine удаляем пакеты, которые могут конфликтовать с официальными пакетами Docker:
 
@@ -12,7 +16,9 @@ for package in docker.io docker-doc docker-compose docker-compose-v2 podman-dock
 done
 ```
 
-## Добавляем официальный репозиторий
+## Шаг 2. Добавить официальный репозиторий
+
+Устанавливаем инструменты для загрузки ключа и создаём каталог ключей:
 
 ```bash
 sudo apt-get update
@@ -36,11 +42,13 @@ Signed-By: /etc/apt/keyrings/docker.asc" | \
 sudo apt-get update
 ```
 
-## Устанавливаем Docker Engine
+## Шаг 3. Установить Docker Engine
 
 ```bash
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+## Проверка установки
 
 Проверяем состояние службы и запускаем тестовый контейнер:
 
@@ -49,7 +57,7 @@ sudo systemctl status docker --no-pager
 sudo docker run --rm hello-world
 ```
 
-## Настраиваем запуск без sudo
+## Необязательно: запуск без sudo
 
 Группа `docker` предоставляет привилегии уровня `root`. Добавляйте в неё только доверенных пользователей.
 

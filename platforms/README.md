@@ -1,3 +1,5 @@
 # Платформы
 
-- [Termux](termux/README.md)
+Инструкции, привязанные к конкретным платформам и окружениям.
+
+- [Termux](termux/README.md) — работа с Ubuntu на устройстве Android.

@@ -1,12 +1,14 @@
 # Ollama
 
+Команды, модели и примеры локального запуска Ollama.
+
 ## Документация
 
-- [Команды](commands.md)
-- [Модели](models.md)
+- [Команды Ollama в Docker](commands.md) — управление контейнером и моделями.
+- [Выбранные модели](models.md) — названия и примерные размеры.
 
 ## Примеры
 
-- [`examples/compose`](examples/compose/) — запуск Ollama через Docker Compose.
-- [`examples/python-client`](examples/python-client/) — самодостаточный пример Python-клиента и Ollama.
-- [`examples/rag`](examples/rag/) — рабочий локальный RAG с Ollama, Qdrant и Streamlit.
+- [Ollama через Docker Compose](examples/compose/) — запуск с ограничениями ресурсов.
+- [Python-клиент Ollama](examples/python-client/) — клиент и Ollama в Compose.
+- [Локальный RAG](examples/rag/) — Ollama, Qdrant и Streamlit.

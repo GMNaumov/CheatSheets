@@ -1,36 +1,40 @@
 # Установка и настройка локального DeepSeek Harness с Ollama
 
-Установим и настроим DeepSeek Harness (далее — DSH) и подключим его к модели, запущенной с помощью Ollama.
+Руководство запускает DeepSeek Harness (DSH) и Ollama в одной сети Docker Compose и подключает DSH к локальной модели.
 
-Всё окружение будет работать в Docker. Предполагается, что Docker уже установлен в системе.
+## Перед началом
 
-Все проекты располагаются в каталоге `Projects`.
+Нужны установленные Docker и Docker Compose, подключение к интернету для загрузки образов и модели, а также каталог `Projects` для проекта.
 
-## Шаг 1. Создаём каталог проекта
+## Шаг 1. Создать каталог проекта
+
+Создаём рабочий каталог и переходим в него:
 
 ```bash
-mkdir Projects/dsh-local && cd Projects/dsh-local
+mkdir -p Projects/dsh-local && cd Projects/dsh-local
 ```
 
-## Шаг 2. Создаём Compose-файл
+## Шаг 2. Создать Compose-файл
+
+Создаём файл конфигурации:
 
 ```bash
 touch compose.yaml
 ```
 
-В созданный `compose.yaml` копируем содержимое [примера](../examples/compose.yaml). В нём нужно обратить внимание на следующие настройки:
+Скопируйте в `compose.yaml` содержимое [примера](../examples/compose.yaml). В конфигурации важны следующие настройки:
 
 - контейнеры взаимодействуют через внутреннюю сеть `ngm-llm-deepseek-harness-net`;
-
 - порт DSH опубликован как `127.0.0.1:3080:3080`, поэтому интерфейс доступен только с хостовой машины;
 - порт Ollama `11434` на хост не опубликован и доступен только другим контейнерам в сети `ngm-llm-deepseek-harness-net`;
 - для доступа к DSH с других устройств необходимо изменить привязку порта и настроить `DSH_CONTAINER_KEY` и `DSH_CONTAINER_TRUSTED_HOSTS`;
-
-- `DSH_CONTAINER_TRUSTED_HOSTS` определяет, каким именам хостов можно доверять. В примере разрешены `localhost`, `127.0.0.1` и `dsh`.
+- `DSH_CONTAINER_TRUSTED_HOSTS` определяет, каким именам хостов можно доверять. В примере разрешены `localhost`, `127.0.0.1` и `dsh`;
 - рабочие файлы и настройки DSH сохраняются в именованных томах `ngm-llm-deepseek-harness-dsh-workspace` и `ngm-llm-deepseek-harness-dsh-data`;
 - для DSH используется тег `latest`, поскольку образ не публикуется с версионным тегом. Зафиксированную версию Ollama можно обновлять отдельно после проверки примера.
 
-## Шаг 3. Запускаем Ollama и загружаем модель qwen3:8b
+## Шаг 3. Запустить Ollama и загрузить модель qwen3:8b
+
+Запускаем сервис, скачиваем модель и проверяем список моделей:
 
 ```bash
 docker compose up -d ollama
@@ -38,14 +42,16 @@ docker compose exec ollama ollama pull qwen3:8b
 docker compose exec ollama ollama list
 ```
 
-В результате должны увидеть что-то похожее:
+В списке должна появиться `qwen3:8b`; идентификатор и время будут отличаться:
 
 ```text
 NAME                ID              SIZE      MODIFIED
 qwen3:8b            500a1f067a9f    5.2 GB    46 minutes ago
 ```
 
-## Шаг 4. Запускаем контейнер DSH
+## Шаг 4. Запустить контейнер DSH
+
+Запускаем DSH в той же сети Compose:
 
 ```bash
 docker compose up -d dsh
@@ -53,33 +59,30 @@ docker compose up -d dsh
 
 Открываем в браузере `http://localhost:3080` и проверяем работу интерфейса.
 
-## Шаг 5. Настраиваем подключение DSH к Ollama
+## Шаг 5. Настроить подключение DSH к Ollama
 
-- В интерфейсе DSH находим раздел `Settings`.
+1. В интерфейсе DSH откройте раздел `Settings`.
 
-  ![DSH Settings](../assets/dsh-settings.png)
+   ![DSH Settings](../assets/dsh-settings.png)
 
-- В настройках находим раздел `Models` и выбираем `+ Add model provider`.
+2. В разделе `Models` выберите `+ Add model provider`.
 
-  ![Add model](../assets/dsh-model-add.png)
+   ![Add model](../assets/dsh-model-add.png)
 
-- В открывшемся окне выбираем `Custom model API` и заполняем поля:
+3. В открывшемся окне выберите `Custom model API` и заполните поля:
 
-  - `API key`: `ollama`. DSH требует непустой API-ключ для любого провайдера, но локальный сервер Ollama его не проверяет;
+   - `API key`: `ollama`. DSH требует непустой API-ключ для любого провайдера, но локальный сервер Ollama его не проверяет;
+   - `Provider ID`: `ollama`;
+   - `Display name`: `ollama`;
+   - `Base URL`: `http://ollama:11434/v1`. Адрес работает внутри сети Compose; имя `ollama` недоступно с хостовой машины;
+   - `API Protocol`: `OpenAI Chat Completions`.
 
-  - `Provider ID`: `ollama`;
-  - `Display name`: `ollama`;
+4. Нажмите `Fetch available models`. В списке должна появиться загруженная модель. Выберите её и нажмите `Add selected`.
 
-  - `Base URL`: `http://ollama:11434/v1`. Адрес работает внутри сети Compose; имя `ollama` недоступно с хостовой машины;
+   ![Models available](../assets/dsh-models-available.png)
 
-  - `API Protocol`: `OpenAI Chat Completions`.
+5. Завершите настройку кнопкой `Create provider`.
 
-- Нажимаем `Fetch available models`. Если всё настроено правильно и модель загружена, появится список доступных моделей. Выбираем нужные модели и нажимаем `Add selected`.
+## Шаг 6. Проверить подключение
 
-  ![Models available](../assets/dsh-models-available.png)
-
-- Завершаем настройку кнопкой `Create provider`.
-
-## Шаг 6. Проверяем подключение
-
-Создаём Workspace и сессию, выбираем модель, отправляем запрос и радуемся тому, какие мы большие молодцы.
+Создайте Workspace и сессию, выберите модель и отправьте тестовый запрос. Ответ модели подтвердит, что DSH подключён к Ollama.

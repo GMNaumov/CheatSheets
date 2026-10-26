@@ -1,3 +1,5 @@
 # Промпты
 
-- [Промпт для разработки Python REST API](development/python-rest-api.md)
+Заготовки запросов к языковым моделям для задач разработки.
+
+- [Разработка Python REST API](development/python-rest-api.md) — запрос для регистрации пользователя в FastAPI.

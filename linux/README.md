@@ -1,12 +1,14 @@
 # Linux
 
+Справочные заметки по командам Linux и управлению пакетами.
+
 ## Команды
 
-- [`chmod`](commands/chmod.md)
-- [`mkdir`](commands/mkdir.md)
-- [`usermod`](commands/usermod.md)
+- [`chmod`](commands/chmod.md) — права доступа к файлам и каталогам.
+- [`mkdir`](commands/mkdir.md) — создание каталогов.
+- [`usermod`](commands/usermod.md) — изменение учётных записей.
 
 ## Управление пакетами
 
-- [APT](package-management/apt.md)
-- [Snap](package-management/snap.md)
+- [APT](package-management/apt.md) — обновление и установка пакетов.
+- [Snap](package-management/snap.md) — установка пакетов Snap.

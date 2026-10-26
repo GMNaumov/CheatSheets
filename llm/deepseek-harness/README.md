@@ -1,6 +1,13 @@
 # DeepSeek Harness
 
-- [Варианты подключения к Ollama](configuration.md)
-- [Установка с Ollama](guides/install-with-ollama.md)
-- [`examples`](examples/) — Compose-конфигурация.
-- [`assets`](assets/) — иллюстрации для руководств.
+Материалы по запуску DeepSeek Harness (DSH) с локальной Ollama.
+
+## Настройка
+
+- [Варианты подключения к Ollama](configuration.md) — адрес API для разных вариантов запуска.
+- [Установка с Ollama](guides/install-with-ollama.md) — пошаговое руководство для Docker Compose.
+
+## Пример и иллюстрации
+
+- [Compose-конфигурация](examples/) — рабочие файлы примера.
+- [Иллюстрации](assets/) — скриншоты для руководства.
