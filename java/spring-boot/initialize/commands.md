@@ -19,3 +19,5 @@ curl https://start.spring.io/starter.zip \
   -d baseDir=my-project \
   -o my-project.zip && unzip my-project.zip && rm my-project.zip
 ```
+
+После распаковки перейдите в каталог `my-project` и используйте [команды запуска, тестирования и сборки](../commands.md).

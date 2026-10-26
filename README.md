@@ -5,7 +5,7 @@
 ## Разделы
 
 - [Docker](docker/README.md) — команды и руководства по установке и удалению Docker.
-- [Git](git/README.md) — настройка Git.
+- [Git](git/README.md) — создание репозитория и повседневные команды.
 - [Java](java/README.md) — команды для создания проектов Spring Boot.
 - [Linux](linux/README.md) — команды и управление пакетами.
 - [LLM](llm/README.md) — Ollama, DeepSeek Harness, RAG и промпты.

@@ -4,6 +4,7 @@
 
 ## Команды
 
+- [Основные команды Linux](commands/basic.md) — навигация, просмотр и операции с файлами.
 - [`chmod`](commands/chmod.md) — права доступа к файлам и каталогам.
 - [`mkdir`](commands/mkdir.md) — создание каталогов.
 - [`usermod`](commands/usermod.md) — изменение учётных записей.

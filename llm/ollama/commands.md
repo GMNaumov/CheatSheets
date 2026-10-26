@@ -10,10 +10,26 @@
 docker exec ollama ollama --version
 ```
 
-### Показать загруженные модели
+### Показать скачанные модели
 
 ```bash
 docker exec ollama ollama list
+```
+
+### Проверить состояние сервиса
+
+Показывает состояние контейнера Ollama в текущем Compose-проекте.
+
+```bash
+docker compose ps ollama
+```
+
+### Посмотреть логи Ollama
+
+Выводит последние сообщения и продолжает показывать новые. Выход из просмотра: `Ctrl+C`.
+
+```bash
+docker compose logs --tail=100 -f ollama
 ```
 
 ### Остановить окружение Compose
@@ -44,12 +60,26 @@ docker exec -it ollama sh
 
 ## Модели
 
+### Показать модели в памяти
+
+`ollama ps` показывает модели, которые сейчас загружены для выполнения запросов.
+
+```bash
+docker exec ollama ollama ps
+```
+
 ### Загрузить модель
 
 Скачивает `phi4-mini` в контейнер. Понадобятся интернет и свободное место на диске.
 
 ```bash
 docker exec ollama ollama pull phi4-mini
+```
+
+### Посмотреть сведения о модели
+
+```bash
+docker exec ollama ollama show phi4-mini
 ```
 
 ### Запустить интерактивный чат
